@@ -7,6 +7,9 @@ import Login from './screens/login/login';
 import Home from './screens/home/home';
 import AddTodo from './screens/Addtodo/additems';
 import Register from './screens/login/register';
+import ContactScreen from './screens/contact/contact';
+import ProfilePage from './screens/profile/profile';
+import AboutScreen from './screens/about/about';
 
 function App() {
   return (
@@ -20,6 +23,12 @@ function App() {
           <Route path={AllRoutes.login} element={<Login />} />
 
           <Route path={AllRoutes.register} element={<Register />} />
+
+          <Route path={AllRoutes.contact} element={<ContactScreen />} />
+
+          <Route path={AllRoutes.profile} element={<ProfilePage />} />
+
+          <Route path={AllRoutes.about} element={<AboutScreen />} />
 
           {/* Home Route */}
           <Route

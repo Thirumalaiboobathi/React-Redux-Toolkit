@@ -1,0 +1,45 @@
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Center align the content */
+  font-family: Arial, sans-serif; /* Use a professional font */
+}
+
+.profile-heading {
+  color: #333;
+  margin-top: 0;
+  font-size: 36px; /* Adjust title font size */
+  font-weight: bold; /* Add bold font-weight */
+  text-transform: uppercase; /* Make text uppercase */
+  letter-spacing: 2px; /* Add spacing between letters */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+}
+
+.profile-icon {
+  margin-top: 20px; /* Adjust spacing between title and icon */
+  color: #555;
+  font-size: 48px; /* Increase icon size */
+}
+
+.profile-details {
+  text-align: center; /* Center align the details */
+}
+
+.detail {
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.detail-info {
+  color: #333; /* Adjust detail information color */
+  font-style: italic; /* Make the detail information italic */
+}

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Facebook, Google } from '@mui/icons-material';
+import GoogleButton from './GoogleButton';
+import Navbar from '../../navBar/navbar';
 
 
 
@@ -42,6 +43,7 @@ function LoginPage() {
 
   return (
     <div style={{ backgroundColor: '#508bfc', minHeight: '100vh' }}>
+      <Navbar />
       <MDBContainer fluid>
         <MDBRow className='d-flex justify-content-center align-items-center h-100'>
           <MDBCol col='12'>
@@ -84,14 +86,12 @@ function LoginPage() {
                   Register
                 </MDBBtn>
                 <br></br>
-                <MDBBtn className="mb-2 w-100" size="lg" style={{ backgroundColor: '#dd4b39' }}>
-                  <Google className="mx-2" />
-                  Sign in with Google
-                </MDBBtn>
-                <MDBBtn className="mb-4 w-100" size="lg" style={{ backgroundColor: '#3b5998' }}>
-                  <Facebook className="mx-2" />
-                  Sign in with Facebook
-                </MDBBtn>
+                <div className="text-center">
+                  <p>or sign in with:</p>
+                  <hr className="my-4" />
+                  <GoogleButton />
+                </div>
+
                 <p style={{ color: messageColor }}>{message}</p>
               </MDBCardBody>
             </MDBCard>

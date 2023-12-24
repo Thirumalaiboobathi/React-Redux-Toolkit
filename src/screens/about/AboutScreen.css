@@ -1,0 +1,38 @@
+
+.about-container {
+    margin: 20px;
+  }
+  
+  /* Content styles */
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title styles */
+  .about-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  /* Details styles */
+  .about-details {
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  
+  /* Specific paragraph styles */
+  .about-details p {
+    margin-bottom: 15px;
+  }
+  .about-title {
+    text-align: center; /* Align the text to the center */
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  
