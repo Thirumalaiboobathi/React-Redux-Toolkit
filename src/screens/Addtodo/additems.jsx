@@ -129,6 +129,7 @@ const AddItems = () => {
                 onChange={(e) => setQualification(e.target.value)}
                 style={{ borderRadius: '8px' }}
                 required
+                
               >
                 <option value="">Select</option>
                 <option value="BE/B Tech">BE/B Tech</option>
