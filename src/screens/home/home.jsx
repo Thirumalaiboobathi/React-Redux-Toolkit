@@ -1,41 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchTodosStart, deleteTodoSuccess } from '../../reducer/todosSlice';
-import axios from 'axios';
-import { config } from '../../config';
+import React, { useState } from 'react';
+import { useGetAllTodosQuery, useDeleteTodoMutation } from '../../reducer/services';
 import { Button, Modal, Table, Spinner } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todos.todos);
+  const navigate = useNavigate();
+
+  const { data: todos, isLoading: loading, isError: fetchError } = useGetAllTodosQuery();
+  const [deleteTodo, { isError: deleteError }] = useDeleteTodoMutation();
+
   const [currentIndex, setCurrentIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Initialize useNavigate for navigation
 
-  useEffect(() => {
-    dispatch(fetchTodosStart());
-  }, [dispatch]);
-
-  useEffect(() => {
-    setLoading(todos.length === 0);
-  }, [todos]);
-
-  const handleDelete = (index) => {
-    setCurrentIndex(index);
+  const handleDelete = (id) => {
+    setCurrentIndex(id);
     setShowModal(true);
   };
 
   const confirmDelete = async () => {
     try {
-      if (currentIndex !== null) {
-        await axios.delete(`${config.api_endpoint_baseURL}/${todos[currentIndex].id}`);
-        const updatedTodos = todos.filter((_, index) => index !== currentIndex);
-        dispatch(deleteTodoSuccess(updatedTodos));
-        setShowModal(false);
-      }
+      await deleteTodo(currentIndex);
+      setShowModal(false);
     } catch (error) {
       console.error('Error deleting:', error);
     }
@@ -45,19 +31,21 @@ const Home = () => {
     setShowModal(false);
   };
 
-  const handleEdit = (index) => {
-    const todoToEdit = todos[index];
-    navigate(`/additems`, { state: { editing: true, todoToEdit, index } });
+  const handleEdit = (id) => {
+    navigate(`/additems/${id}`);
   };
 
   const handleAddTodo = () => {
     navigate('/additems');
   };
 
-  const handleLogout = () => {
+  const handleLogout =()=> {
     navigate('/');
+  }
 
-  };
+  if (fetchError || deleteError) {
+    return <div>Error fetching or deleting data...</div>;
+  }
 
   return (
     <div className="container">

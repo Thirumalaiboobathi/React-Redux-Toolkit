@@ -17,6 +17,7 @@ const todosSlice = createSlice({
     fetchTodosSuccess(state, action) {
       state.loading = false;
       state.todos = action.payload;
+      state.error = null;
     },
     fetchTodosFailure(state, action) {
       state.loading = false;
@@ -26,7 +27,7 @@ const todosSlice = createSlice({
       state.todos.push(action.payload);
     },
     deleteTodoSuccess(state, action) {
-      state.todos = action.payload;
+      state.todos = state.todos.filter(todo => todo.id !== action.payload);
     },
     updateTodoSuccess(state, action) {
       state.todos = state.todos.map(todo =>

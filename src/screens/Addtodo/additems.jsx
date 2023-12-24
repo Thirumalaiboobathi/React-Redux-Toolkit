@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTodoSuccess, updateTodoSuccess } from '../../reducer/todosSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -17,13 +17,14 @@ const AddItems = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [age, setAge] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTodo = { studentName, age, email, qualification, phoneNumber };
 
     try {
+      console.log('New Todo:', newTodo); // Debug: Log the newTodo object
+
       if (editing && todoToEdit && typeof index !== 'undefined') {
         dispatch(updateTodoSuccess(newTodo));
         setShowAlert(true);
@@ -47,10 +48,9 @@ const AddItems = () => {
   const handleGoBack = () => {
     navigate('/home');
   };
-
   return (
     <div className="container">
-            <div className="border rounded p-4 mt-4" style={{ backgroundColor: '#f9f9f9', maxWidth: '500px', margin: '0 auto' }}>
+      <div className="border rounded p-4 mt-4" style={{ backgroundColor: '#f9f9f9', maxWidth: '500px', margin: '0 auto' }}>
         <h1 className="text-center mb-4" style={{ color: '#333333' }}>
           Enter Student Details
         </h1>
@@ -58,7 +58,7 @@ const AddItems = () => {
           Go Back
         </Button>
         <Form onSubmit={handleSubmit}>
-
+          
           {/* Student Name */}
           <Form.Group className="mb-3">
             <Form.Label style={{ color: '#333333' }}>Student Name:</Form.Label>
@@ -142,3 +142,5 @@ const AddItems = () => {
 };
 
 export default AddItems;
+
+
