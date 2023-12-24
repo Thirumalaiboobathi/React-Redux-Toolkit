@@ -1,39 +1,55 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addTodoSuccess, updateTodoSuccess } from '../../reducer/todosSlice';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './addtodo.css';
+import axios from 'axios';
+import { config } from '../../config';
 
 const AddItems = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { editing, todoToEdit, index } = location.state || {};
   const [studentName, setStudentName] = useState('');
   const [email, setEmail] = useState('');
   const [qualification, setQualification] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [age, setAge] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { editing, todoToEdit, index } = location.state || {};
+
+  useEffect(() => {
+    if (showAlert) {
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+    }
+  }, [showAlert]);
+
+  useEffect(() => {
+    if (editing && todoToEdit) {
+      setStudentName(todoToEdit.studentName || '');
+      setAge(todoToEdit.age || '');
+      setEmail(todoToEdit.email || '');
+      setQualification(todoToEdit.qualification || '');
+      setPhoneNumber(todoToEdit.phoneNumber || '');
+    }
+  }, [editing, todoToEdit]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTodo = { studentName, age, email, qualification, phoneNumber };
 
     try {
-      console.log('New Todo:', newTodo); // Debug: Log the newTodo object
-
       if (editing && todoToEdit && typeof index !== 'undefined') {
-        dispatch(updateTodoSuccess(newTodo));
+        await axios.put(`${config.api_endpoint_baseURL}/${todoToEdit.id}`, newTodo);
         setShowAlert(true);
 
         setTimeout(() => {
           navigate('/home');
         }, 4000);
       } else {
-        dispatch(addTodoSuccess(newTodo));
+        await axios.post(`${config.api_endpoint_baseURL}`, newTodo);
         setShowAlert(true);
 
         setTimeout(() => {
@@ -48,6 +64,7 @@ const AddItems = () => {
   const handleGoBack = () => {
     navigate('/home');
   };
+
   return (
     <div className="container">
       <div className="border rounded p-4 mt-4" style={{ backgroundColor: '#f9f9f9', maxWidth: '500px', margin: '0 auto' }}>
@@ -58,7 +75,7 @@ const AddItems = () => {
           Go Back
         </Button>
         <Form onSubmit={handleSubmit}>
-          
+
           {/* Student Name */}
           <Form.Group className="mb-3">
             <Form.Label style={{ color: '#333333' }}>Student Name:</Form.Label>
@@ -142,5 +159,3 @@ const AddItems = () => {
 };
 
 export default AddItems;
-
-

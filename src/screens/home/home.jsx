@@ -1,51 +1,73 @@
-import React, { useState } from 'react';
-import { useGetAllTodosQuery, useDeleteTodoMutation } from '../../reducer/services';
-import { Button, Modal, Table, Spinner } from 'react-bootstrap';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import axios from 'axios';
+import { config } from '../../config';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import { Spinner } from 'react-bootstrap';
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const { data: todos, isLoading: loading, isError: fetchError } = useGetAllTodosQuery();
-  const [deleteTodo, { isError: deleteError }] = useDeleteTodoMutation();
-
-  const [currentIndex, setCurrentIndex] = useState(null);
+  // ... (previous code remains the same)
+  const [todos, setTodos] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  const handleDelete = (id) => {
-    setCurrentIndex(id);
+  useEffect(() => {
+    fetchData(); 
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${config.api_endpoint_baseURL}`);
+      setTodos(response.data); 
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
+  };
+
+  
+  const handleAddTodo = () => {
+    navigate('/additems');
+  };
+
+  const handleLogout = () => {
+    navigate('/');
+  };
+
+  const handleEdit = (index) => {
+    const todoToEdit = todos[index];
+    navigate('/additems', { state: { editing: true, todoToEdit, index } });
+  };
+
+  const handleDelete = (index) => {
+    setCurrentIndex(index);
     setShowModal(true);
   };
+  
 
   const confirmDelete = async () => {
     try {
-      await deleteTodo(currentIndex);
+      await axios.delete(`${config.api_endpoint_baseURL}/${todos[currentIndex].id}`);
+      const updatedTodos = todos.filter((_, index) => index !== currentIndex);
+      setTodos(updatedTodos);
       setShowModal(false);
     } catch (error) {
       console.error('Error deleting:', error);
     }
   };
 
+  
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/additems/${id}`);
-  };
-
-  const handleAddTodo = () => {
-    navigate('/additems');
-  };
-
-  const handleLogout =()=> {
-    navigate('/');
-  }
-
-  if (fetchError || deleteError) {
-    return <div>Error fetching or deleting data...</div>;
-  }
 
   return (
     <div className="container">
@@ -61,53 +83,57 @@ const Home = () => {
         </div>
       </header>
       <div className="table-responsive">
-        {loading ? (
+        {loading ? ( // Checking if data is still loading
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
+            {/* Display a loading spinner or message */}
+            {/* For example, using a spinner from react-bootstrap */}
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
+            
             <p className="m-0 ms-2">Loading...</p>
           </div>
         ) : (
-          todos.length === 0 ? (
-            <p className="text-center">No items yet</p>
-          ) : (
-            <Table striped bordered hover>
-              <thead className="table-dark">
-                <tr>
-                  <th>Student Name</th>
-                  <th>Age</th>
-                  <th>Email</th>
-                  <th>Qualification</th>
-                  <th>Phone Number</th>
-                  <th>Actions</th>
+        todos.length === 0 ? (
+          <p className="text-center">No items yet</p>
+        ) : (
+          <Table striped bordered hover>
+            <thead className="table-dark">
+              <tr>
+                <th>Student Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Qualification</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {todos.map((todo, index) => (
+                <tr key={index}>
+                  <td>{todo.studentName}</td>
+                  <td>{todo.age}</td>
+                  <td>{todo.email}</td>
+                  <td>{todo.qualification}</td>
+                  <td>{todo.phoneNumber}</td>
+                  <td>
+                  <Button variant="info" className="me-2" onClick={() => handleEdit(index)}>
+                      <FaEdit /> Edit
+                    </Button>
+                    
+                    <Button variant="danger" onClick={() => handleDelete(index)}>
+                      <FaTrash /> Delete
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {todos.map((todo, index) => (
-                  <tr key={index}>
-                    <td>{todo.studentName}</td>
-                    <td>{todo.age}</td>
-                    <td>{todo.email}</td>
-                    <td>{todo.qualification}</td>
-                    <td>{todo.phoneNumber}</td>
-                    <td>
-                      <Button variant="info" className="me-2" onClick={() => handleEdit(index)}>
-                        <FaEdit /> Edit
-                      </Button>
-                      <Button variant="danger" onClick={() => handleDelete(index)}>
-                        <FaTrash /> Delete
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )
+              ))}
+            </tbody>
+          </Table>
+        )
         )}
       </div>
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+      <Modal.Header closeButton>
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this item?</Modal.Body>
