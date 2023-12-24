@@ -43,7 +43,7 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <button className="nav-link" onClick={handleLoginClick}>Login</button>
             </li>
@@ -58,7 +58,7 @@ function Navbar() {
             <button className="nav-link" onClick={handleAboutClick}>About</button>
             </li>
           </ul>
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <a href="https://github.com/Thirumalaiboobathi" target="_blank" rel="noopener noreferrer" className="nav-link">
                 <GitHubIcon fontSize="large" style={{ marginRight: '10px' }} />

@@ -26,7 +26,7 @@ function App() {
 
           <Route path={AllRoutes.contact} element={<ContactScreen />} />
 
-          <Route path={AllRoutes.profile} element={<ProfilePage />} />
+          
 
           <Route path={AllRoutes.about} element={<AboutScreen />} />
 
@@ -36,6 +36,16 @@ function App() {
             element={
               <PrivateRoute path={AllRoutes.home}>
                 <Home />
+              </PrivateRoute>
+            }
+          />
+          
+          {/* Home Route */}
+          <Route
+            path={AllRoutes.profile}
+            element={
+              <PrivateRoute path={AllRoutes.profile}>
+                <ProfilePage />
               </PrivateRoute>
             }
           />

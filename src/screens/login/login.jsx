@@ -6,6 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import GoogleButton from './GoogleButton';
 import Navbar from '../../navBar/navbar';
+import './loginpage.css'
 
 
 

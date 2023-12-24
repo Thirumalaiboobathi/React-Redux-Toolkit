@@ -90,6 +90,7 @@ const AddItems = () => {
                 value={studentName}
                 onChange={(e) => setStudentName(e.target.value)}
                 style={{ borderRadius: '8px' }}
+                required
               />
             </Form.Group>
 
@@ -102,6 +103,7 @@ const AddItems = () => {
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
                 style={{ borderRadius: '8px' }}
+                required
               />
             </Form.Group>
 
@@ -114,6 +116,7 @@ const AddItems = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 style={{ borderRadius: '8px' }}
+                required
               />
             </Form.Group>
 
@@ -125,6 +128,7 @@ const AddItems = () => {
                 value={qualification}
                 onChange={(e) => setQualification(e.target.value)}
                 style={{ borderRadius: '8px' }}
+                required
               >
                 <option value="">Select</option>
                 <option value="BE/B Tech">BE/B Tech</option>
@@ -136,16 +140,27 @@ const AddItems = () => {
             </Form.Group>
 
             {/* Phone Number */}
-            <Form.Group className="mb-3">
-              <Form.Label style={{ color: '#333333' }}>Phone Number:</Form.Label>
-              <Form.Control
-                type="tel"
-                placeholder="Enter phone number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                style={{ borderRadius: '8px' }}
-              />
-            </Form.Group>
+                    <Form.Group className="mb-3">
+            <Form.Label style={{ color: '#333333' }}>Phone Number:</Form.Label>
+            <Form.Control
+              type="tel"
+              placeholder="Enter phone number"
+              value={phoneNumber}
+              onChange={(e) => {
+                // Allow only 10 digits for the phone number
+                const input = e.target.value.replace(/\D/g, '').substring(0, 10);
+                setPhoneNumber(input);
+              }}
+              style={{ borderRadius: '8px' }}
+              minLength={10} // Enforcing minimum length
+              maxLength={10} // Enforcing maximum length
+              required // Making the field required
+            />
+            {/* Error message for incorrect phone number */}
+            {phoneNumber.length !== 10 && (
+              <small style={{ color: 'red' }}>Please enter a 10-digit phone number.</small>
+            )}
+          </Form.Group>
 
             {/* Submit Button */}
             <Button type="submit" variant="success" className="d-block mx-auto mb-3" style={{ width: '100%', borderRadius: '8px' }}>
